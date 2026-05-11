@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PT Solutions — AI Automation &amp; Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&family=Open+Sans:wght@400;500;600&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg:           #0A0A0F;
+      --bg-card:      #0E0E16;
+      --bg-card-hover:#131320;
+      --accent:       #7C3AED;
+      --accent-light: #9F6BFF;
+      --muted:        #2C2C2C;
+      --muted-light:  #3A3A3A;
+      --text:         #EAEAEA;
+      --text-dim:     rgba(234,234,234,0.55);
+      --text-bright:  #FFFFFF;
+      --green:        #7DD3A8;
+      --font-h:       'Roboto Mono', monospace;
+      --font-b:       'Open Sans', sans-serif;
+      --font-c:       'Fira Code', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b);
+      font-size: 17px;
+      line-height: 1.65;
+      /* subtle dot-grid texture */
+      background-image: radial-gradient(circle, rgba(44,44,44,0.45) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+
+    /* ── SELECTION ── */
+    ::selection { background: rgba(124,58,237,0.35); color: var(--text-bright); }
+
+    /* ─────────────────── NAV ─────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 60px;
+      background-color: rgba(10,10,15,0.95);
+      border-bottom: 1px solid var(--muted);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-logo {
+      width: 200px;
+      height: auto;
+      display: block;
+    }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+
+    .nav-links a {
+      font-family: var(--font-h);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-links a:hover    { color: var(--text); border-bottom-color: var(--accent); }
+    .nav-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 1px; }
+    .nav-links a:active   { color: var(--accent-light); }
+
+    .nav-cta {
+      font-family: var(--font-h);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      background-color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 8px 20px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-cta:hover { background-color: var(--accent-light); border-color: var(--accent-light); }
+    .nav-cta:active { opacity: 0.85; }
+
+    /* ─────────────────── HERO ─────────────────── */
+    .hero {
+      min-height: 100vh;
+      padding: 160px 48px 96px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-c);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--accent-light);
+      letter-spacing: 0.05em;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s ease forwards 0.1s;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-h);
+      font-size: clamp(40px, 5.5vw, 72px);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s ease forwards 0.22s;
+    }
+
+    .hero-h1 span { color: var(--accent-light); }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 4px;
+      height: 0.82em;
+      background: var(--accent);
+      margin-left: 6px;
+      vertical-align: middle;
+      border-radius: 1px;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-rule {
+      width: 56px; height: 2px;
+      background-color: var(--accent);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.34s;
+    }
+
+    .hero-sub {
+      font-family: var(--font-b);
+      font-size: 18px;
+      color: var(--text-dim);
+      line-height: 1.75;
+      max-width: 560px;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s ease forwards 0.46s;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s ease forwards 0.58s;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      margin-top: 72px;
+      border-top: 1px solid var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.72s;
+    }
+
+    .stat {
+      padding: 28px 48px 0 0;
+      border-right: 1px solid var(--muted);
+      margin-right: 48px;
+    }
+    .stat:last-child { border-right: none; margin-right: 0; }
+
+    .stat-num {
+      font-family: var(--font-h);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-lbl {
+      font-family: var(--font-b);
+      font-size: 12px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-block;
+      font-family: var(--font-h);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 2px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+    }
+    .btn:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 3px; }
+    .btn:active { opacity: 0.8; }
+
+    .btn-primary {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background-color: var(--accent-light); border-color: var(--accent-light); color: var(--bg); }
+
+    .btn-ghost {
+      background-color: transparent;
+      border-color: rgba(159,107,255,0.45);
+      color: var(--text-dim);
+    }
+    .btn-ghost:hover { border-color: var(--accent-light); color: var(--text); }
+
+    /* ─────────────────── SECTION SHARED ─────────────────── */
+    section { padding: 96px 48px; border-top: 1px solid var(--muted); }
+
+    .sec-inner { max-width: 1200px; margin: 0 auto; }
+
+    .sec-eyebrow {
+      font-family: var(--font-c);
+      font-size: 12px;
+      color: var(--accent-light);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .sec-h2 {
+      font-family: var(--font-h);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      color: var(--text-bright);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .sec-sub {
+      font-family: var(--font-b);
+      font-size: 16px;
+      color: var(--text-dim);
+      max-width: 520px;
+      line-height: 1.75;
+      margin-bottom: 56px;
+    }
+
+    /* ─────────────────── SERVICES ─────────────────── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid var(--muted);
+      gap: 0;
+    }
+
+    .svc-card {
+      padding: 40px;
+      border-right: 1px solid var(--muted);
+      border-bottom: 1px solid var(--muted);
+      border-left: 3px solid transparent;
+      background-color: var(--bg-card);
+      transition: background-color 0.18s ease, border-left-color 0.18s ease;
+      cursor: default;
+    }
+    .svc-card:nth-child(2n) { border-right: none; }
+    .svc-card:nth-child(n+3) { border-bottom: none; }
+
+    .svc-card:hover {
+      background-color: var(--bg-card-hover);
+      border-left-color: var(--accent-light);
+    }
+    .svc-card:hover .svc-icon { color: var(--accent-light); }
+
+    .svc-num {
+      font-family: var(--font-c);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .svc-icon {
+      color: var(--accent);
+      margin-bottom: 20px;
+      transition: color 0.18s ease;
+    }
+
+    .svc-title {
+      font-family: var(--font-h);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .svc-desc {
+      font-family: var(--font-b);
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.75;
+    }
+
+    /* ─────────────────── ABOUT ─────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .about-body p {
+      font-family: var(--font-b);
+      font-size: 16px;
+      color: var(--text-dim);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .about-body p:last-of-type { margin-bottom: 32px; }
+    .about-body strong { color: var(--text); font-weight: 600; }
+
+    /* Terminal */
+    .terminal {
+      background-color: #0C0C14;
+      border: 1px solid var(--muted);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .term-bar {
+      background-color: #111120;
+      border-bottom: 1px solid var(--muted);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .term-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background-color: var(--muted);
+    }
+
+    .term-label {
+      font-family: var(--font-c);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-left: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .term-body {
+      padding: 24px;
+      font-family: var(--font-c);
+      font-size: 12.5px;
+      line-height: 2;
+    }
+
+    .t-ps1  { color: var(--accent); user-select: none; }
+    .t-cmd  { color: var(--text); }
+    .t-key  { color: var(--accent-light); }
+    .t-val  { color: var(--green); }
+    .t-dim  { color: var(--text-dim); padding-left: 16px; }
+    .t-cmt  { color: var(--muted-light); font-style: italic; padding-left: 16px; }
+
+    /* ─────────────────── CONTACT ─────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .contact-lede {
+      font-family: var(--font-b);
+      font-size: 16px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .contact-items { display: flex; flex-direction: column; gap: 16px; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .contact-item svg { color: var(--accent); flex-shrink: 0; }
+    .contact-item span {
+      font-family: var(--font-c);
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Form */
+    .form { display: flex; flex-direction: column; gap: 20px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+
+    .form-label {
+      font-family: var(--font-c);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+    }
+
+    .form-input, .form-textarea {
+      background-color: rgba(14,14,22,0.8);
+      border: 1px solid var(--muted);
+      border-radius: 2px;
+      padding: 11px 14px;
+      font-family: var(--font-b);
+      font-size: 14px;
+      color: var(--text);
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s ease;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(234,234,234,0.2);
+    }
+    .form-input:hover, .form-textarea:hover {
+      border-color: rgba(124,58,237,0.4);
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-textarea { resize: vertical; min-height: 128px; }
+
+    /* ─────────────────── FOOTER ─────────────────── */
+    footer {
+      border-top: 1px solid var(--muted);
+      padding: 28px 48px;
+    }
+    .foot-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .foot-copy {
+      font-family: var(--font-c);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .foot-links { display: flex; gap: 20px; list-style: none; }
+    .foot-links a {
+      color: var(--text-dim);
+      transition: color 0.15s ease;
+      display: flex;
+      align-items: center;
+    }
+    .foot-links a:hover { color: var(--accent-light); }
+    .foot-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 1px; }
+
+    /* ─────────────────── ANIMATIONS ─────────────────── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────────── RESPONSIVE ─────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .hero { padding: 120px 24px 80px; }
+      section { padding: 72px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .svc-card { border-right: none; }
+      .svc-card:nth-child(n) { border-bottom: 1px solid var(--muted); }
+      .svc-card:last-child { border-bottom: none; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; gap: 24px; }
+      .stat { padding-right: 0; border-right: none; margin-right: 0; padding-top: 24px; border-top: 1px solid var(--muted); }
+      .foot-inner { flex-direction: column; gap: 16px; }
+      footer { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" aria-label="PT Solutions home">
+    <img src="brand_assets/PT-Solutions-logo.jpg" alt="PT Solutions" class="nav-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- ── HERO ── -->
+<main>
+<section style="border-top:none; padding-top:0;">
+<div class="hero">
+  <div class="hero-eyebrow">// AI AUTOMATION &amp; CONSULTING</div>
+  <h1 class="hero-h1">
+    We Build <span>AI Systems</span><br>That Work.<span class="cursor-blink"></span>
+  </h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">PT Solutions delivers custom AI automation, intelligent workflows, and hands-on AI consulting for businesses ready to scale. No fluff. No buzzwords. Just systems that run.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn btn-primary">Get a Free Consultation</a>
+    <a href="#services" class="btn btn-ghost">View Services</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">50+</span>
+      <span class="stat-lbl">AI Systems Deployed</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">4.2×</span>
+      <span class="stat-lbl">Avg. ROI Multiplier</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">48h</span>
+      <span class="stat-lbl">Prototype to Demo</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="sec-inner">
+    <span class="sec-eyebrow">// WHAT WE DO</span>
+    <h2 class="sec-h2">Core Services.</h2>
+    <p class="sec-sub">From strategy to deployment — we handle every layer of your AI implementation.</p>
+
+    <div class="services-grid">
+
+      <!-- 01 AI Automation -->
+      <div class="svc-card">
+        <span class="svc-num">01 / automation</span>
+        <div class="svc-icon">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="24" height="20" rx="2"/>
+            <line x1="3" y1="11" x2="27" y2="11"/>
+            <line x1="8" y1="17" x2="11" y2="17"/>
+            <line x1="8" y1="21" x2="13" y2="21"/>
+            <line x1="15" y1="17" x2="22" y2="17"/>
+            <line x1="17" y1="21" x2="22" y2="21"/>
+          </svg>
+        </div>
+        <div class="svc-title">AI Automation</div>
+        <p class="svc-desc">Replace repetitive manual workflows with custom AI agents. From document processing to customer interactions — we automate the work that slows your team down.</p>
+      </div>
+
+      <!-- 02 AI Consulting -->
+      <div class="svc-card">
+        <span class="svc-num">02 / consulting</span>
+        <div class="svc-icon">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="15" cy="15" r="11"/>
+            <polyline points="15,8 15,15 20,18"/>
+            <circle cx="15" cy="15" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="svc-title">AI Consulting</div>
+        <p class="svc-desc">Not sure where AI fits in your business? We audit your operations, identify high-ROI opportunities, and deliver a prioritized adoption roadmap — with no technical fluff.</p>
+      </div>
+
+      <!-- 03 Custom AI Systems -->
+      <div class="svc-card">
+        <span class="svc-num">03 / development</span>
+        <div class="svc-icon">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="8,11 4,15 8,19"/>
+            <polyline points="22,11 26,15 22,19"/>
+            <line x1="18" y1="7" x2="12" y2="23"/>
+          </svg>
+        </div>
+        <div class="svc-title">Custom AI Systems</div>
+        <p class="svc-desc">Bespoke AI pipelines, fine-tuned models, and end-to-end integrations built to your exact specifications. We ship production-ready systems, not demos.</p>
+      </div>
+
+      <!-- 04 Process Optimization -->
+      <div class="svc-card">
+        <span class="svc-num">04 / optimization</span>
+        <div class="svc-icon">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3,23 9,15 13,19 19,9 27,7"/>
+            <line x1="27" y1="7" x2="22" y2="7"/>
+            <line x1="27" y1="7" x2="27" y2="12"/>
+          </svg>
+        </div>
+        <div class="svc-title">Process Optimization</div>
+        <p class="svc-desc">Map your current workflows, identify bottlenecks, and redesign operations with AI at the core. Faster cycles. Lower overhead. Measurable output gains.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="sec-inner">
+    <span class="sec-eyebrow">// WHO WE ARE</span>
+    <h2 class="sec-h2">Built by Engineers.<br>Focused on Results.</h2>
+
+    <div class="about-grid">
+      <div class="about-body">
+        <p>PT Solutions was built for one reason: <strong>most businesses know AI can help them, but lack the expertise to implement it properly.</strong> We bridge that gap — from the first strategy call to a system running in production.</p>
+        <p>We don't sell hype. We build pipelines, fine-tune models, and design automation flows that slot directly into your existing operations. Every system we ship is measurable, maintainable, and built to last.</p>
+        <p>Whether you're a startup automating your first workflow or an enterprise ready to go all-in on AI — we work with you at whatever stage you're in.</p>
+        <a href="#contact" class="btn btn-primary">Start the Conversation</a>
+      </div>
+
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+          <span class="term-label">pt-solutions ~ status</span>
+        </div>
+        <div class="term-body">
+          <div><span class="t-ps1">&gt;&nbsp;</span><span class="t-cmd">pt status --verbose</span></div>
+          <div class="t-dim"><span class="t-key">systems_deployed</span>:&nbsp;&nbsp;&nbsp;<span class="t-val">52</span></div>
+          <div class="t-dim"><span class="t-key">avg_roi_multiplier</span>:&nbsp;<span class="t-val">4.2x</span></div>
+          <div class="t-dim"><span class="t-key">models_fine_tuned</span>:&nbsp;&nbsp;<span class="t-val">18</span></div>
+          <div class="t-dim"><span class="t-key">uptime_sla</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"99.9%"</span></div>
+          <div class="t-dim"><span class="t-key">industries</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">["finance","health","logistics"]</span></div>
+          <br>
+          <div><span class="t-ps1">&gt;&nbsp;</span><span class="t-cmd">pt list --services</span></div>
+          <div class="t-cmt"># active services</div>
+          <div class="t-dim">✓&nbsp;<span class="t-key">ai_automation</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">[active]</span></div>
+          <div class="t-dim">✓&nbsp;<span class="t-key">ai_consulting</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">[active]</span></div>
+          <div class="t-dim">✓&nbsp;<span class="t-key">custom_ai_systems</span>&nbsp;&nbsp;<span class="t-val">[active]</span></div>
+          <div class="t-dim">✓&nbsp;<span class="t-key">process_optim</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">[active]</span></div>
+          <br>
+          <div><span class="t-ps1">&gt;&nbsp;</span><span class="cursor-blink" style="animation-delay:0.4s;"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="sec-inner">
+    <span class="sec-eyebrow">// GET IN TOUCH</span>
+    <h2 class="sec-h2">Ready to Deploy?</h2>
+    <p class="sec-sub">Tell us about your project. We'll respond within 24 hours with a clear, honest assessment.</p>
+
+    <div class="contact-grid">
+      <div>
+        <p class="contact-lede">Have a specific workflow to automate? A system to build? Or just exploring what AI can do for your business? We're here for all of it.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="14" height="10" rx="1"/>
+              <polyline points="1,4 8,9 15,4"/>
+            </svg>
+            <span>hello@pt-solutions.ai</span>
+          </div>
+          <div class="contact-item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="7"/>
+              <line x1="8" y1="4" x2="8" y2="8"/>
+              <line x1="8" y1="8" x2="11" y2="10"/>
+            </svg>
+            <span>Response within 24 hours</span>
+          </div>
+          <div class="contact-item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 1C4.13 1 1 4.13 1 8a7 7 0 0 0 4.78 6.65c.35.06.48-.15.48-.34v-1.2C4.03 13.53 3.62 12.2 3.62 12.2c-.32-.82-.79-1.04-.79-1.04-.64-.44.05-.43.05-.43.71.05 1.08.73 1.08.73.63 1.08 1.65.77 2.05.59.06-.46.25-.77.45-.95-1.57-.18-3.22-.78-3.22-3.49 0-.77.28-1.4.73-1.89-.07-.18-.32-.9.07-1.87 0 0 .59-.19 1.95.73A6.8 6.8 0 0 1 8 4.84c.6.003 1.2.08 1.77.23 1.35-.92 1.94-.73 1.94-.73.39.97.14 1.69.07 1.87.45.49.73 1.12.73 1.89 0 2.72-1.66 3.31-3.24 3.49.25.22.48.65.48 1.31v1.95c0 .19.13.4.49.33A7.001 7.001 0 0 0 15 8c0-3.87-3.13-7-7-7z"/>
+            </svg>
+            <span>github.com/pt-solutions</span>
+          </div>
+        </div>
+      </div>
+
+      <form class="form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <input class="form-input" type="text" id="name" name="name" placeholder="Your name" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="company">Company <span style="color:var(--muted-light); font-style:italic">(optional)</span></label>
+          <input class="form-input" type="text" id="company" name="company" placeholder="Your company" autocomplete="organization">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">What are you trying to automate or build?</label>
+          <textarea class="form-textarea" id="message" name="message" placeholder="Describe your use case, current process, or what you'd like to achieve..."></textarea>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Send Message →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="foot-inner">
+    <span class="foot-copy">© 2025 PT Solutions. All rights reserved.</span>
+    <ul class="foot-links">
+      <li>
+        <a href="#" aria-label="LinkedIn" title="LinkedIn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="3"/>
+            <line x1="8" y1="11" x2="8" y2="17"/>
+            <line x1="8" y1="6" x2="8" y2="8"/>
+            <path d="M12 17v-5.5M15.5 17v-3a2 2 0 0 0-3.5-1.3"/>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="#" aria-label="GitHub" title="GitHub">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="#" aria-label="Twitter / X" title="Twitter">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
