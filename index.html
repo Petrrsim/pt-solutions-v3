@@ -1,781 +1,848 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PT Solutions — AI Automation &amp; Consulting</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&family=Open+Sans:wght@400;500;600&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      --bg:           #0A0A0F;
-      --bg-card:      #0E0E16;
-      --bg-card-hover:#131320;
-      --accent:       #7C3AED;
-      --accent-light: #9F6BFF;
-      --muted:        #2C2C2C;
-      --muted-light:  #3A3A3A;
-      --text:         #EAEAEA;
-      --text-dim:     rgba(234,234,234,0.55);
-      --text-bright:  #FFFFFF;
-      --green:        #7DD3A8;
-      --font-h:       'Roboto Mono', monospace;
-      --font-b:       'Open Sans', sans-serif;
-      --font-c:       'Fira Code', monospace;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PT Solutions — Petr Šimůnek · Systems Thinker & Generalist</title>
+<meta name="description" content="Designing elegant systems for complex real-world problems. Architect at the intersection of engineering, business, and technology." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600&family=Open+Sans:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0A0A0F',
+          surface: '#101017',
+          line: '#1C1C26',
+          muted: '#7A7A85',
+          gray2: '#C2C2C2',
+          fg: '#EAEAEA',
+          violet: '#7C3AED',
+          violetLight: '#9F6BFF',
+        },
+        fontFamily: {
+          mono: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
+          sans: ['"Open Sans"', 'system-ui', 'sans-serif'],
+          code: ['"Fira Code"', 'ui-monospace', 'monospace'],
+        },
+      }
     }
+  }
+</script>
+<style>
+  :root {
+    --bg: #0A0A0F;
+    --surface: #101017;
+    --line: #1C1C26;
+    --line-strong: #2A2A38;
+    --muted: #7A7A85;
+    --gray2: #C2C2C2;
+    --fg: #EAEAEA;
+    --violet: #7C3AED;
+    --violet-light: #9F6BFF;
+  }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
 
-    html { scroll-behavior: smooth; }
+  /* hairline grid background */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: var(--font-b);
-      font-size: 17px;
-      line-height: 1.65;
-      /* subtle dot-grid texture */
-      background-image: radial-gradient(circle, rgba(44,44,44,0.45) 1px, transparent 1px);
-      background-size: 28px 28px;
-    }
+  .h-display {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .h-mono {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .label-mono {
+    font-family: 'Fira Code', ui-monospace, monospace;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .accent { color: var(--violet); }
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+  .section-rule { border-top: 1px solid var(--line); }
 
-    /* ── SELECTION ── */
-    ::selection { background: rgba(124,58,237,0.35); color: var(--text-bright); }
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 22px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    border: 1px solid var(--line-strong);
+    color: var(--fg);
+    background: transparent;
+    border-radius: 2px;
+    transition: border-color 200ms cubic-bezier(.2,.8,.2,1), color 200ms, background-color 200ms, transform 150ms;
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--violet); color: var(--violet-light); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
+  .btn-primary {
+    background: var(--violet);
+    border-color: var(--violet);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--violet-light); border-color: var(--violet-light); color: #0A0A0F; }
+  .btn-primary:focus-visible { outline-color: var(--violet-light); }
+  .btn .arrow {
+    display: inline-block;
+    transition: transform 250ms cubic-bezier(.2,.8,.2,1);
+  }
+  .btn:hover .arrow { transform: translateX(4px); }
 
-    /* ─────────────────── NAV ─────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 60px;
-      background-color: rgba(10,10,15,0.95);
-      border-bottom: 1px solid var(--muted);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px;
-      backdrop-filter: blur(8px);
-    }
+  .marker {
+    width: 8px; height: 8px;
+    background: var(--violet);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .marker-ring {
+    width: 10px; height: 10px;
+    border: 1px solid var(--violet);
+    display: inline-block;
+    flex-shrink: 0;
+  }
 
-    .nav-logo {
-      width: 200px;
-      height: auto;
-      display: block;
-    }
+  .field {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line-strong);
+    color: var(--fg);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    padding: 14px 0;
+    width: 100%;
+    transition: border-color 200ms;
+  }
+  .field::placeholder { color: var(--muted); }
+  .field:focus { outline: none; border-color: var(--violet); }
+  textarea.field { resize: vertical; min-height: 140px; line-height: 1.6; }
+  .field-label {
+    font-family: 'Fira Code', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 
-    .nav-links { display: flex; gap: 36px; list-style: none; }
+  /* Photo frame */
+  .photo-frame {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(0.25) contrast(1.04) brightness(0.98);
+  }
+  .photo-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(124, 58, 237, 0.08);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  /* subtle inner border overlay for the photo */
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    z-index: 1;
+    pointer-events: none;
+  }
 
-    .nav-links a {
-      font-family: var(--font-h);
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-dim);
-      text-decoration: none;
-      padding-bottom: 2px;
-      border-bottom: 2px solid transparent;
-      transition: color 0.15s ease, border-color 0.15s ease;
-    }
-    .nav-links a:hover    { color: var(--text); border-bottom-color: var(--accent); }
-    .nav-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 1px; }
-    .nav-links a:active   { color: var(--accent-light); }
+  .corner {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--violet);
+    z-index: 2;
+  }
+  .corner-tl { top: -1px; left: -1px; border-top: 1px solid; border-left: 1px solid; }
+  .corner-tr { top: -1px; right: -1px; border-top: 1px solid; border-right: 1px solid; }
+  .corner-bl { bottom: -1px; left: -1px; border-bottom: 1px solid; border-left: 1px solid; }
+  .corner-br { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
 
-    .nav-cta {
-      font-family: var(--font-h);
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      background-color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 8px 20px;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
-    }
-    .nav-cta:hover { background-color: var(--accent-light); border-color: var(--accent-light); }
-    .nav-cta:active { opacity: 0.85; }
+  /* Trait cards */
+  .trait {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 28px 26px 30px;
+    border-radius: 2px;
+    transition: border-color 250ms;
+    position: relative;
+  }
+  .trait:hover { border-color: var(--line-strong); }
+  .trait:hover .trait-num { color: var(--violet); }
+  .trait-num {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    transition: color 250ms;
+  }
 
-    /* ─────────────────── HERO ─────────────────── */
-    .hero {
-      min-height: 100vh;
-      padding: 160px 48px 96px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+  /* Subtle entry: only the hero's initial reveals stagger in; everything else
+     is visible by default. Keeps SSR/screenshots/no-JS reliable. */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .reveal { animation: fadeUp 700ms cubic-bezier(.2,.8,.2,1) both; }
+  @media (prefers-reduced-motion: reduce) { .reveal { animation: none; } }
 
-    .hero-eyebrow {
-      font-family: var(--font-c);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--accent-light);
-      letter-spacing: 0.05em;
-      margin-bottom: 28px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.5s ease forwards 0.1s;
-    }
+  @keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  .caret { display: inline-block; width: 0.55ch; background: var(--violet); height: 0.9em; vertical-align: -0.05em; margin-left: 0.12em; animation: blink 1.1s steps(1) infinite; }
 
-    .hero-h1 {
-      font-family: var(--font-h);
-      font-size: clamp(40px, 5.5vw, 72px);
-      font-weight: 700;
-      color: var(--text-bright);
-      line-height: 1.1;
-      letter-spacing: -0.025em;
-      margin-bottom: 28px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.5s ease forwards 0.22s;
-    }
+  .ticker {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex;
+    gap: 48px;
+    align-items: center;
+    animation: marquee 60s linear infinite;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 
-    .hero-h1 span { color: var(--accent-light); }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 56px;
+  }
 
-    .cursor-blink {
-      display: inline-block;
-      width: 4px;
-      height: 0.82em;
-      background: var(--accent);
-      margin-left: 6px;
-      vertical-align: middle;
-      border-radius: 1px;
-      animation: blink 1s step-end infinite;
-    }
+  a.subtle {
+    color: var(--gray2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 1px;
+    transition: color 200ms, border-color 200ms;
+  }
+  a.subtle:hover { color: var(--violet-light); border-color: var(--violet); }
 
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .node {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    padding: 14px 18px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--gray2);
+    border-radius: 2px;
+  }
+  .node-accent { color: var(--violet); border-color: var(--violet); }
 
-    .hero-rule {
-      width: 56px; height: 2px;
-      background-color: var(--accent);
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 0.5s ease forwards 0.34s;
-    }
+  .logo {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--violet);
+    font-size: 16px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-    .hero-sub {
-      font-family: var(--font-b);
-      font-size: 18px;
-      color: var(--text-dim);
-      line-height: 1.75;
-      max-width: 560px;
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.5s ease forwards 0.46s;
-    }
+  .hero-title { font-size: clamp(36px, 6.4vw, 84px); }
+  .section-title { font-size: clamp(28px, 4.2vw, 52px); }
 
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.5s ease forwards 0.58s;
-    }
+  .section-index {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-index .marker { width: 6px; height: 6px; }
 
-    .hero-stats {
-      display: flex;
-      gap: 0;
-      margin-top: 72px;
-      border-top: 1px solid var(--muted);
-      opacity: 0;
-      animation: fadeUp 0.5s ease forwards 0.72s;
-    }
+  .side-rail {
+    position: fixed;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 30;
+  }
+  .side-rail a {
+    width: 10px; height: 10px;
+    border: 1px solid var(--line-strong);
+    transition: border-color 200ms, background-color 200ms;
+    border-radius: 1px;
+  }
+  .side-rail a:hover, .side-rail a.active {
+    border-color: var(--violet);
+    background: var(--violet);
+  }
+  @media (min-width: 1280px) { .side-rail { display: flex; } }
 
-    .stat {
-      padding: 28px 48px 0 0;
-      border-right: 1px solid var(--muted);
-      margin-right: 48px;
-    }
-    .stat:last-child { border-right: none; margin-right: 0; }
+  .photo-wrap { aspect-ratio: 4 / 5; width: 100%; }
 
-    .stat-num {
-      font-family: var(--font-h);
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-      display: block;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-    .stat-lbl {
-      font-family: var(--font-b);
-      font-size: 12px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
+  .coord {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+  }
 
-    /* ── BUTTONS ── */
-    .btn {
-      display: inline-block;
-      font-family: var(--font-h);
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      text-decoration: none;
-      padding: 14px 32px;
-      border-radius: 2px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
-    }
-    .btn:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 3px; }
-    .btn:active { opacity: 0.8; }
+  .footer-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  @media (min-width: 768px) {
+    .footer-row { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1024px) {
+    .footer-row { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+  }
 
-    .btn-primary {
-      background-color: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
-    .btn-primary:hover { background-color: var(--accent-light); border-color: var(--accent-light); color: var(--bg); }
+  .form-ok {
+    border: 1px solid var(--violet);
+    padding: 28px;
+    background: rgba(124, 58, 237, 0.05);
+    border-radius: 2px;
+  }
 
-    .btn-ghost {
-      background-color: transparent;
-      border-color: rgba(159,107,255,0.45);
-      color: var(--text-dim);
-    }
-    .btn-ghost:hover { border-color: var(--accent-light); color: var(--text); }
-
-    /* ─────────────────── SECTION SHARED ─────────────────── */
-    section { padding: 96px 48px; border-top: 1px solid var(--muted); }
-
-    .sec-inner { max-width: 1200px; margin: 0 auto; }
-
-    .sec-eyebrow {
-      font-family: var(--font-c);
-      font-size: 12px;
-      color: var(--accent-light);
-      letter-spacing: 0.06em;
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    .sec-h2 {
-      font-family: var(--font-h);
-      font-size: clamp(28px, 3vw, 40px);
-      font-weight: 700;
-      color: var(--text-bright);
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin-bottom: 16px;
-    }
-
-    .sec-sub {
-      font-family: var(--font-b);
-      font-size: 16px;
-      color: var(--text-dim);
-      max-width: 520px;
-      line-height: 1.75;
-      margin-bottom: 56px;
-    }
-
-    /* ─────────────────── SERVICES ─────────────────── */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      border: 1px solid var(--muted);
-      gap: 0;
-    }
-
-    .svc-card {
-      padding: 40px;
-      border-right: 1px solid var(--muted);
-      border-bottom: 1px solid var(--muted);
-      border-left: 3px solid transparent;
-      background-color: var(--bg-card);
-      transition: background-color 0.18s ease, border-left-color 0.18s ease;
-      cursor: default;
-    }
-    .svc-card:nth-child(2n) { border-right: none; }
-    .svc-card:nth-child(n+3) { border-bottom: none; }
-
-    .svc-card:hover {
-      background-color: var(--bg-card-hover);
-      border-left-color: var(--accent-light);
-    }
-    .svc-card:hover .svc-icon { color: var(--accent-light); }
-
-    .svc-num {
-      font-family: var(--font-c);
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      display: block;
-    }
-
-    .svc-icon {
-      color: var(--accent);
-      margin-bottom: 20px;
-      transition: color 0.18s ease;
-    }
-
-    .svc-title {
-      font-family: var(--font-h);
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 12px;
-      letter-spacing: -0.01em;
-    }
-
-    .svc-desc {
-      font-family: var(--font-b);
-      font-size: 14px;
-      color: var(--text-dim);
-      line-height: 1.75;
-    }
-
-    /* ─────────────────── ABOUT ─────────────────── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 72px;
-      align-items: start;
-    }
-
-    .about-body p {
-      font-family: var(--font-b);
-      font-size: 16px;
-      color: var(--text-dim);
-      line-height: 1.85;
-      margin-bottom: 20px;
-    }
-    .about-body p:last-of-type { margin-bottom: 32px; }
-    .about-body strong { color: var(--text); font-weight: 600; }
-
-    /* Terminal */
-    .terminal {
-      background-color: #0C0C14;
-      border: 1px solid var(--muted);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .term-bar {
-      background-color: #111120;
-      border-bottom: 1px solid var(--muted);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .term-dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background-color: var(--muted);
-    }
-
-    .term-label {
-      font-family: var(--font-c);
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-left: 10px;
-      letter-spacing: 0.05em;
-    }
-
-    .term-body {
-      padding: 24px;
-      font-family: var(--font-c);
-      font-size: 12.5px;
-      line-height: 2;
-    }
-
-    .t-ps1  { color: var(--accent); user-select: none; }
-    .t-cmd  { color: var(--text); }
-    .t-key  { color: var(--accent-light); }
-    .t-val  { color: var(--green); }
-    .t-dim  { color: var(--text-dim); padding-left: 16px; }
-    .t-cmt  { color: var(--muted-light); font-style: italic; padding-left: 16px; }
-
-    /* ─────────────────── CONTACT ─────────────────── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 72px;
-      align-items: start;
-    }
-
-    .contact-lede {
-      font-family: var(--font-b);
-      font-size: 16px;
-      color: var(--text-dim);
-      line-height: 1.8;
-      margin-bottom: 40px;
-    }
-
-    .contact-items { display: flex; flex-direction: column; gap: 16px; }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .contact-item svg { color: var(--accent); flex-shrink: 0; }
-    .contact-item span {
-      font-family: var(--font-c);
-      font-size: 13px;
-      color: var(--text-dim);
-    }
-
-    /* Form */
-    .form { display: flex; flex-direction: column; gap: 20px; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    .form-group { display: flex; flex-direction: column; gap: 7px; }
-
-    .form-label {
-      font-family: var(--font-c);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-dim);
-    }
-
-    .form-input, .form-textarea {
-      background-color: rgba(14,14,22,0.8);
-      border: 1px solid var(--muted);
-      border-radius: 2px;
-      padding: 11px 14px;
-      font-family: var(--font-b);
-      font-size: 14px;
-      color: var(--text);
-      width: 100%;
-      outline: none;
-      transition: border-color 0.15s ease;
-      -webkit-appearance: none;
-    }
-    .form-input::placeholder, .form-textarea::placeholder {
-      color: rgba(234,234,234,0.2);
-    }
-    .form-input:hover, .form-textarea:hover {
-      border-color: rgba(124,58,237,0.4);
-    }
-    .form-input:focus, .form-textarea:focus {
-      border-color: var(--accent);
-    }
-    .form-textarea { resize: vertical; min-height: 128px; }
-
-    /* ─────────────────── FOOTER ─────────────────── */
-    footer {
-      border-top: 1px solid var(--muted);
-      padding: 28px 48px;
-    }
-    .foot-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .foot-copy {
-      font-family: var(--font-c);
-      font-size: 11px;
-      color: var(--text-dim);
-    }
-    .foot-links { display: flex; gap: 20px; list-style: none; }
-    .foot-links a {
-      color: var(--text-dim);
-      transition: color 0.15s ease;
-      display: flex;
-      align-items: center;
-    }
-    .foot-links a:hover { color: var(--accent-light); }
-    .foot-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 1px; }
-
-    /* ─────────────────── ANIMATIONS ─────────────────── */
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─────────────────── RESPONSIVE ─────────────────── */
-    @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .hero { padding: 120px 24px 80px; }
-      section { padding: 72px 24px; }
-      .services-grid { grid-template-columns: 1fr; }
-      .svc-card { border-right: none; }
-      .svc-card:nth-child(n) { border-bottom: 1px solid var(--muted); }
-      .svc-card:last-child { border-bottom: none; }
-      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-      .form-row { grid-template-columns: 1fr; }
-      .hero-stats { flex-direction: column; gap: 24px; }
-      .stat { padding-right: 0; border-right: none; margin-right: 0; padding-top: 24px; border-top: 1px solid var(--muted); }
-      .foot-inner { flex-direction: column; gap: 16px; }
-      footer { padding: 28px 24px; }
-    }
-  </style>
+  ::selection { background: var(--violet); color: #fff; }
+</style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
-<nav>
-  <a href="#" aria-label="PT Solutions home">
-    <img src="brand_assets/PT-Solutions-logo.jpg" alt="PT Solutions" class="nav-logo">
-  </a>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Get Started</a>
+<!-- TOP NAV -->
+<header class="fixed top-0 left-0 right-0 z-40 backdrop-blur-md" style="background: rgba(10,10,15,0.72); border-bottom: 1px solid var(--line);">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10 h-[64px] flex items-center justify-between">
+    <a href="#top" class="logo">
+      <span style="color: var(--violet);">PT</span>
+      <span style="color: var(--fg);">SOLUTIONS</span>
+      <span class="ml-2 hidden sm:inline" style="color: var(--muted); font-weight: 400; font-size: 11px; letter-spacing: 0.14em;">/ v3.0</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#about" class="h-mono text-[12px]" style="color: var(--gray2);">[01] ABOUT</a>
+      <a href="#philosophy" class="h-mono text-[12px]" style="color: var(--gray2);">[02] PHILOSOPHY</a>
+      <a href="#contact" class="h-mono text-[12px]" style="color: var(--gray2);">[03] CONTACT</a>
+    </nav>
+    <a href="#contact" class="btn hidden sm:inline-flex" style="padding: 10px 16px; font-size: 11px;">
+      OPEN CHANNEL
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</header>
+
+<!-- side rail -->
+<nav class="side-rail" aria-label="Section anchors">
+  <a href="#top" data-anchor="top" aria-label="Hero"></a>
+  <a href="#about" data-anchor="about" aria-label="About"></a>
+  <a href="#philosophy" data-anchor="philosophy" aria-label="Philosophy"></a>
+  <a href="#contact" data-anchor="contact" aria-label="Contact"></a>
 </nav>
 
-<!-- ── HERO ── -->
-<main>
-<section style="border-top:none; padding-top:0;">
-<div class="hero">
-  <div class="hero-eyebrow">// AI AUTOMATION &amp; CONSULTING</div>
-  <h1 class="hero-h1">
-    We Build <span>AI Systems</span><br>That Work.<span class="cursor-blink"></span>
-  </h1>
-  <div class="hero-rule"></div>
-  <p class="hero-sub">PT Solutions delivers custom AI automation, intelligent workflows, and hands-on AI consulting for businesses ready to scale. No fluff. No buzzwords. Just systems that run.</p>
-  <div class="hero-actions">
-    <a href="#contact" class="btn btn-primary">Get a Free Consultation</a>
-    <a href="#services" class="btn btn-ghost">View Services</a>
-  </div>
-  <div class="hero-stats">
-    <div class="stat">
-      <span class="stat-num">50+</span>
-      <span class="stat-lbl">AI Systems Deployed</span>
+<main id="top" class="pt-[64px]">
+
+<!-- HERO -->
+<section class="relative grid-bg">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10 pt-16 md:pt-28 pb-20 md:pb-28">
+
+    <div class="flex items-center justify-between mb-10 md:mb-16 reveal">
+      <div class="section-index">
+        <span class="marker"></span>
+        <span>HERO / 01</span>
+      </div>
+      <div class="coord hidden md:block">50.0755° N · 14.4378° E — PRAGUE / CZ</div>
+      <div class="coord">SYS · ONLINE</div>
     </div>
-    <div class="stat">
-      <span class="stat-num">4.2×</span>
-      <span class="stat-lbl">Avg. ROI Multiplier</span>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-end">
+
+      <div class="lg:col-span-7">
+        <div class="label-mono mb-6 reveal" style="transition-delay: 60ms;">
+          ARCHITECT · SYSTEMS THINKER · GENERALIST
+        </div>
+
+        <h1 class="hero-title h-display reveal" style="transition-delay: 120ms;">
+          Designing<br/>
+          <span class="accent">elegant systems</span><br/>
+          for complex<br/>
+          real-world problems<span class="caret"></span>
+        </h1>
+
+        <p class="mt-10 max-w-xl text-[17px] md:text-[19px] reveal" style="color: var(--gray2); transition-delay: 200ms;">
+          I am a Systems Thinker and Generalist. I connect the dots between
+          engineering, business, and technology to turn operational chaos
+          into clarity.
+        </p>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4 reveal" style="transition-delay: 280ms;">
+          <a href="#contact" class="btn btn-primary">
+            SHARE AN INTERESTING PROBLEM
+            <span class="arrow">→</span>
+          </a>
+          <a href="#about" class="btn">
+            EXPLORE MY MINDSET
+            <span class="arrow">↓</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 reveal" style="transition-delay: 200ms;">
+        <div class="relative">
+          <div class="coord mb-3 flex items-center justify-between">
+            <span>SUBJECT · P.ŠIMŮNEK</span>
+            <span>FRAME 01 / 01</span>
+          </div>
+          <div class="photo-frame photo-wrap">
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+            <img src="media/photo.jpg" alt="Petr Šimůnek" />
+          </div>
+          <div class="mt-3 flex items-center justify-between">
+            <span class="coord">FOCAL · ARCHITECT</span>
+            <span class="coord">REC ● LIVE</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="stat">
-      <span class="stat-num">48h</span>
-      <span class="stat-lbl">Prototype to Demo</span>
-    </div>
-  </div>
-</div>
-</section>
 
-<!-- ── SERVICES ── -->
-<section id="services">
-  <div class="sec-inner">
-    <span class="sec-eyebrow">// WHAT WE DO</span>
-    <h2 class="sec-h2">Core Services.</h2>
-    <p class="sec-sub">From strategy to deployment — we handle every layer of your AI implementation.</p>
+    <!-- ticker -->
+    <div class="mt-20 md:mt-28 border-y reveal" style="border-color: var(--line); transition-delay: 360ms;">
+      <div class="ticker py-4">
+        <div class="ticker-track">
+          <span class="h-mono text-[12px]" style="color: var(--muted);">MECHANICAL ENGINEERING</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">AI AUTOMATION</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">B2B SALES</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">CONSTRUCTION</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">SKYDIVING</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">AVIATION</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">N8N · CLAUDE CODE</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">SYSTEMS THEORY</span>
+          <span class="h-mono text-[12px] accent">/</span>
 
-    <div class="services-grid">
-
-      <!-- 01 AI Automation -->
-      <div class="svc-card">
-        <span class="svc-num">01 / automation</span>
-        <div class="svc-icon">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="5" width="24" height="20" rx="2"/>
-            <line x1="3" y1="11" x2="27" y2="11"/>
-            <line x1="8" y1="17" x2="11" y2="17"/>
-            <line x1="8" y1="21" x2="13" y2="21"/>
-            <line x1="15" y1="17" x2="22" y2="17"/>
-            <line x1="17" y1="21" x2="22" y2="21"/>
-          </svg>
-        </div>
-        <div class="svc-title">AI Automation</div>
-        <p class="svc-desc">Replace repetitive manual workflows with custom AI agents. From document processing to customer interactions — we automate the work that slows your team down.</p>
-      </div>
-
-      <!-- 02 AI Consulting -->
-      <div class="svc-card">
-        <span class="svc-num">02 / consulting</span>
-        <div class="svc-icon">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="15" cy="15" r="11"/>
-            <polyline points="15,8 15,15 20,18"/>
-            <circle cx="15" cy="15" r="2" fill="currentColor" stroke="none"/>
-          </svg>
-        </div>
-        <div class="svc-title">AI Consulting</div>
-        <p class="svc-desc">Not sure where AI fits in your business? We audit your operations, identify high-ROI opportunities, and deliver a prioritized adoption roadmap — with no technical fluff.</p>
-      </div>
-
-      <!-- 03 Custom AI Systems -->
-      <div class="svc-card">
-        <span class="svc-num">03 / development</span>
-        <div class="svc-icon">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="8,11 4,15 8,19"/>
-            <polyline points="22,11 26,15 22,19"/>
-            <line x1="18" y1="7" x2="12" y2="23"/>
-          </svg>
-        </div>
-        <div class="svc-title">Custom AI Systems</div>
-        <p class="svc-desc">Bespoke AI pipelines, fine-tuned models, and end-to-end integrations built to your exact specifications. We ship production-ready systems, not demos.</p>
-      </div>
-
-      <!-- 04 Process Optimization -->
-      <div class="svc-card">
-        <span class="svc-num">04 / optimization</span>
-        <div class="svc-icon">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="3,23 9,15 13,19 19,9 27,7"/>
-            <line x1="27" y1="7" x2="22" y2="7"/>
-            <line x1="27" y1="7" x2="27" y2="12"/>
-          </svg>
-        </div>
-        <div class="svc-title">Process Optimization</div>
-        <p class="svc-desc">Map your current workflows, identify bottlenecks, and redesign operations with AI at the core. Faster cycles. Lower overhead. Measurable output gains.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ── ABOUT ── -->
-<section id="about">
-  <div class="sec-inner">
-    <span class="sec-eyebrow">// WHO WE ARE</span>
-    <h2 class="sec-h2">Built by Engineers.<br>Focused on Results.</h2>
-
-    <div class="about-grid">
-      <div class="about-body">
-        <p>PT Solutions was built for one reason: <strong>most businesses know AI can help them, but lack the expertise to implement it properly.</strong> We bridge that gap — from the first strategy call to a system running in production.</p>
-        <p>We don't sell hype. We build pipelines, fine-tune models, and design automation flows that slot directly into your existing operations. Every system we ship is measurable, maintainable, and built to last.</p>
-        <p>Whether you're a startup automating your first workflow or an enterprise ready to go all-in on AI — we work with you at whatever stage you're in.</p>
-        <a href="#contact" class="btn btn-primary">Start the Conversation</a>
-      </div>
-
-      <div class="terminal">
-        <div class="term-bar">
-          <div class="term-dot"></div>
-          <div class="term-dot"></div>
-          <div class="term-dot"></div>
-          <span class="term-label">pt-solutions ~ status</span>
-        </div>
-        <div class="term-body">
-          <div><span class="t-ps1">&gt;&nbsp;</span><span class="t-cmd">pt status --verbose</span></div>
-          <div class="t-dim"><span class="t-key">systems_deployed</span>:&nbsp;&nbsp;&nbsp;<span class="t-val">52</span></div>
-          <div class="t-dim"><span class="t-key">avg_roi_multiplier</span>:&nbsp;<span class="t-val">4.2x</span></div>
-          <div class="t-dim"><span class="t-key">models_fine_tuned</span>:&nbsp;&nbsp;<span class="t-val">18</span></div>
-          <div class="t-dim"><span class="t-key">uptime_sla</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"99.9%"</span></div>
-          <div class="t-dim"><span class="t-key">industries</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">["finance","health","logistics"]</span></div>
-          <br>
-          <div><span class="t-ps1">&gt;&nbsp;</span><span class="t-cmd">pt list --services</span></div>
-          <div class="t-cmt"># active services</div>
-          <div class="t-dim">✓&nbsp;<span class="t-key">ai_automation</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">[active]</span></div>
-          <div class="t-dim">✓&nbsp;<span class="t-key">ai_consulting</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">[active]</span></div>
-          <div class="t-dim">✓&nbsp;<span class="t-key">custom_ai_systems</span>&nbsp;&nbsp;<span class="t-val">[active]</span></div>
-          <div class="t-dim">✓&nbsp;<span class="t-key">process_optim</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">[active]</span></div>
-          <br>
-          <div><span class="t-ps1">&gt;&nbsp;</span><span class="cursor-blink" style="animation-delay:0.4s;"></span></div>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">MECHANICAL ENGINEERING</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">AI AUTOMATION</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">B2B SALES</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">CONSTRUCTION</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">SKYDIVING</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">AVIATION</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">N8N · CLAUDE CODE</span>
+          <span class="h-mono text-[12px] accent">/</span>
+          <span class="h-mono text-[12px]" style="color: var(--muted);">SYSTEMS THEORY</span>
+          <span class="h-mono text-[12px] accent">/</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── CONTACT ── -->
-<section id="contact">
-  <div class="sec-inner">
-    <span class="sec-eyebrow">// GET IN TOUCH</span>
-    <h2 class="sec-h2">Ready to Deploy?</h2>
-    <p class="sec-sub">Tell us about your project. We'll respond within 24 hours with a clear, honest assessment.</p>
+<!-- ABOUT -->
+<section id="about" class="section-rule">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10 py-24 md:py-32">
 
-    <div class="contact-grid">
+    <div class="section-head reveal">
+      <div class="section-index">
+        <span class="marker"></span>
+        <span>ABOUT / 02</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+      <div class="lg:col-span-7">
+        <h2 class="section-title h-display reveal">
+          I don't just write code.<br/>
+          <span class="accent">I orchestrate</span> solutions.
+        </h2>
+      </div>
+      <div class="lg:col-span-5 reveal" style="transition-delay: 100ms;">
+        <p class="text-[17px] md:text-[18px]" style="color: var(--gray2);">
+          Most tech projects fail because the gap between the real-world physical
+          problem and the digital solution is too wide. That's where I operate.
+          With a background spanning mechanical engineering, B2B sales, construction,
+          and AI automation, my strength isn't in being a narrow specialist.
+          My strength is seeing the entire board. I define the problem, architect
+          the system, and connect the right disciplines to build something that
+          actually works.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-20 md:mt-28 grid grid-cols-1 md:grid-cols-3 gap-5">
+      <article class="trait reveal" style="transition-delay: 60ms;">
+        <div class="flex items-center justify-between mb-10">
+          <span class="trait-num">[ 01 ]</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <circle cx="18" cy="18" r="2.5" fill="#7C3AED" />
+            <circle cx="4" cy="4" r="1.5" stroke="#7A7A85" stroke-width="1" />
+            <circle cx="32" cy="4" r="1.5" stroke="#7A7A85" stroke-width="1" />
+            <circle cx="4" cy="32" r="1.5" stroke="#7A7A85" stroke-width="1" />
+            <circle cx="32" cy="32" r="1.5" stroke="#7A7A85" stroke-width="1" />
+            <circle cx="18" cy="2" r="1.2" stroke="#7A7A85" stroke-width="1" />
+            <circle cx="34" cy="18" r="1.2" stroke="#7A7A85" stroke-width="1" />
+            <circle cx="18" cy="34" r="1.2" stroke="#7A7A85" stroke-width="1" />
+            <circle cx="2" cy="18" r="1.2" stroke="#7A7A85" stroke-width="1" />
+            <line x1="18" y1="18" x2="4" y2="4" stroke="#7C3AED" stroke-width="0.6" />
+            <line x1="18" y1="18" x2="32" y2="4" stroke="#7C3AED" stroke-width="0.6" />
+            <line x1="18" y1="18" x2="4" y2="32" stroke="#7C3AED" stroke-width="0.6" />
+            <line x1="18" y1="18" x2="32" y2="32" stroke="#7C3AED" stroke-width="0.6" />
+            <line x1="18" y1="18" x2="18" y2="2" stroke="#7A7A85" stroke-width="0.4" stroke-dasharray="1 2" />
+            <line x1="18" y1="18" x2="34" y2="18" stroke="#7A7A85" stroke-width="0.4" stroke-dasharray="1 2" />
+            <line x1="18" y1="18" x2="18" y2="34" stroke="#7A7A85" stroke-width="0.4" stroke-dasharray="1 2" />
+            <line x1="18" y1="18" x2="2" y2="18" stroke="#7A7A85" stroke-width="0.4" stroke-dasharray="1 2" />
+          </svg>
+        </div>
+        <h3 class="h-display text-[22px] mb-3">The Generalist Advantage</h3>
+        <p class="text-[15px]" style="color: var(--muted);">
+          Cross-pollinating ideas from aviation to AI — the patterns that
+          shape one domain almost always have something to teach another.
+        </p>
+      </article>
+
+      <article class="trait reveal" style="transition-delay: 140ms;">
+        <div class="flex items-center justify-between mb-10">
+          <span class="trait-num">[ 02 ]</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <rect x="14" y="2" width="8" height="6" stroke="#7C3AED" stroke-width="1" fill="none" />
+            <rect x="2" y="20" width="8" height="6" stroke="#7A7A85" stroke-width="1" fill="none" />
+            <rect x="14" y="20" width="8" height="6" stroke="#7A7A85" stroke-width="1" fill="none" />
+            <rect x="26" y="20" width="8" height="6" stroke="#7A7A85" stroke-width="1" fill="none" />
+            <line x1="18" y1="8" x2="18" y2="14" stroke="#7C3AED" stroke-width="0.8" />
+            <line x1="6" y1="14" x2="30" y2="14" stroke="#7A7A85" stroke-width="0.6" />
+            <line x1="6" y1="14" x2="6" y2="20" stroke="#7A7A85" stroke-width="0.6" />
+            <line x1="18" y1="14" x2="18" y2="20" stroke="#7A7A85" stroke-width="0.6" />
+            <line x1="30" y1="14" x2="30" y2="20" stroke="#7A7A85" stroke-width="0.6" />
+            <rect x="3" y="32" width="6" height="2.5" fill="#7C3AED" fill-opacity="0.5" />
+            <rect x="15" y="32" width="6" height="2.5" fill="#7C3AED" fill-opacity="0.5" />
+            <rect x="27" y="32" width="6" height="2.5" fill="#7C3AED" fill-opacity="0.5" />
+          </svg>
+        </div>
+        <h3 class="h-display text-[22px] mb-3">Systems Mapping</h3>
+        <p class="text-[15px]" style="color: var(--muted);">
+          Breaking down complex chaos into logical, solvable nodes — turning
+          a tangled mess into a diagram you can actually act on.
+        </p>
+      </article>
+
+      <article class="trait reveal" style="transition-delay: 220ms;">
+        <div class="flex items-center justify-between mb-10">
+          <span class="trait-num">[ 03 ]</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <rect x="2" y="13" width="10" height="10" stroke="#7A7A85" stroke-width="1" fill="none" />
+            <rect x="24" y="13" width="10" height="10" stroke="#7A7A85" stroke-width="1" fill="none" />
+            <line x1="12" y1="18" x2="24" y2="18" stroke="#7C3AED" stroke-width="1" />
+            <polyline points="20,15 24,18 20,21" stroke="#7C3AED" stroke-width="1" fill="none" />
+            <polyline points="16,15 12,18 16,21" stroke="#7C3AED" stroke-width="1" fill="none" />
+            <text x="3" y="32" fill="#7A7A85" font-family="Fira Code, monospace" font-size="4">BIZ</text>
+            <text x="25" y="32" fill="#7A7A85" font-family="Fira Code, monospace" font-size="4">TECH</text>
+          </svg>
+        </div>
+        <h3 class="h-display text-[22px] mb-3">Seamless Translation</h3>
+        <p class="text-[15px]" style="color: var(--muted);">
+          Bridging the communication gap between business visionaries and
+          deep-tech engineers — so the right thing actually gets built.
+        </p>
+      </article>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy" class="section-rule">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10 py-24 md:py-32">
+
+    <div class="section-head reveal">
+      <div class="section-index">
+        <span class="marker"></span>
+        <span>PHILOSOPHY / 03</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+      <div class="lg:col-span-7">
+        <h2 class="section-title h-display reveal">
+          Where the <span class="accent">physical world</span><br/>
+          meets <span class="accent">digital leverage</span>.
+        </h2>
+        <p class="mt-10 max-w-2xl text-[17px] md:text-[18px] reveal" style="color: var(--gray2); transition-delay: 100ms;">
+          I am fascinated by systems that have a tangible impact. Whether it's
+          optimizing a manufacturing process, or building an AI tool that solves
+          a real operational bottleneck. I build the logic, set up the automations
+          (n8n, Claude Code), and integrate the right human or technical resources
+          to bring the vision to life.
+        </p>
+      </div>
+
+      <div class="lg:col-span-5 reveal" style="transition-delay: 180ms;">
+        <div class="border p-6 md:p-7" style="border-color: var(--line); background: var(--surface); border-radius: 2px;">
+          <div class="flex items-center justify-between mb-6">
+            <span class="label-mono">FIG · 01 / SYSTEM MAP</span>
+            <span class="label-mono">v3.0</span>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="coord w-8">IN</span>
+              <div class="node flex-1">PHYSICAL PROBLEM</div>
+            </div>
+            <div class="flex items-center gap-3 pl-11">
+              <span class="accent">↓</span>
+              <span class="label-mono">map → decompose</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="coord w-8">01</span>
+              <div class="node flex-1">DEFINE · ARCHITECT</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="coord w-8">02</span>
+              <div class="node flex-1">AUTOMATE · n8n / CLAUDE</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="coord w-8">03</span>
+              <div class="node flex-1">INTEGRATE · HUMAN + TECH</div>
+            </div>
+            <div class="flex items-center gap-3 pl-11">
+              <span class="accent">↓</span>
+              <span class="label-mono">deploy → measure</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="coord w-8">OUT</span>
+              <div class="node node-accent flex-1">TANGIBLE LEVERAGE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-rule">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10 py-24 md:py-32">
+
+    <div class="section-head reveal">
+      <div class="section-index">
+        <span class="marker"></span>
+        <span>SERENDIPITY ENGINE / 04</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+      <div class="lg:col-span-6">
+        <h2 class="section-title h-display reveal">
+          Let's expose ourselves to<br/>
+          <span class="accent">positive chance</span>.
+        </h2>
+        <p class="mt-10 max-w-xl text-[17px] md:text-[18px] reveal" style="color: var(--gray2); transition-delay: 100ms;">
+          I am always exploring new challenges, unique projects, and massive
+          bottlenecks. If you are working on a complex problem, trying to build
+          something innovative, or just want to discuss how systems theory
+          applies to your world, let's connect.
+        </p>
+
+        <div class="mt-12 space-y-4 reveal" style="transition-delay: 180ms;">
+          <div class="flex items-center gap-4">
+            <span class="marker-ring"></span>
+            <span class="label-mono">DIRECT</span>
+            <a class="subtle" href="mailto:ai@pt-solutions.tech">ai@pt-solutions.tech</a>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="marker-ring"></span>
+            <span class="label-mono">VOICE</span>
+            <a class="subtle" href="tel:+420777414226">+420 777 414 226</a>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="marker-ring"></span>
+            <span class="label-mono">SOCIAL</span>
+            <a class="subtle" href="https://www.linkedin.com/in/simunekpetr" target="_blank" rel="noopener">linkedin.com/in/simunekpetr</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 reveal" style="transition-delay: 120ms;">
+        <form id="serendipity-form" class="space-y-9" novalidate>
+          <div>
+            <label for="name" class="field-label block mb-2">[ 01 ] · NAME</label>
+            <input id="name" name="name" type="text" class="field" placeholder="Your name" autocomplete="name" required />
+          </div>
+          <div>
+            <label for="email" class="field-label block mb-2">[ 02 ] · EMAIL</label>
+            <input id="email" name="email" type="email" class="field" placeholder="you@somewhere.com" autocomplete="email" required />
+          </div>
+          <div>
+            <label for="problem" class="field-label block mb-2">[ 03 ] · TELL ME ABOUT THE PROBLEM YOU'RE OBSESSING OVER RIGHT NOW</label>
+            <textarea id="problem" name="problem" class="field" placeholder="The messier, the better." required></textarea>
+          </div>
+          <div class="pt-2 flex items-center gap-4">
+            <button type="submit" class="btn btn-primary">
+              SEND
+              <span class="arrow">→</span>
+            </button>
+            <span class="label-mono" id="form-status">CHANNEL · OPEN</span>
+          </div>
+        </form>
+
+        <div id="form-ok" class="form-ok hidden mt-10">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="marker"></span>
+            <span class="label-mono">SIGNAL RECEIVED</span>
+          </div>
+          <p class="text-[15px]" style="color: var(--gray2);">
+            Thanks — I'll review and respond personally. The interesting
+            problems always get answered first.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="section-rule">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10 py-16">
+
+    <div class="footer-row mb-14">
       <div>
-        <p class="contact-lede">Have a specific workflow to automate? A system to build? Or just exploring what AI can do for your business? We're here for all of it.</p>
-        <div class="contact-items">
-          <div class="contact-item">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="3" width="14" height="10" rx="1"/>
-              <polyline points="1,4 8,9 15,4"/>
-            </svg>
-            <span>hello@pt-solutions.ai</span>
-          </div>
-          <div class="contact-item">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="8" cy="8" r="7"/>
-              <line x1="8" y1="4" x2="8" y2="8"/>
-              <line x1="8" y1="8" x2="11" y2="10"/>
-            </svg>
-            <span>Response within 24 hours</span>
-          </div>
-          <div class="contact-item">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 1C4.13 1 1 4.13 1 8a7 7 0 0 0 4.78 6.65c.35.06.48-.15.48-.34v-1.2C4.03 13.53 3.62 12.2 3.62 12.2c-.32-.82-.79-1.04-.79-1.04-.64-.44.05-.43.05-.43.71.05 1.08.73 1.08.73.63 1.08 1.65.77 2.05.59.06-.46.25-.77.45-.95-1.57-.18-3.22-.78-3.22-3.49 0-.77.28-1.4.73-1.89-.07-.18-.32-.9.07-1.87 0 0 .59-.19 1.95.73A6.8 6.8 0 0 1 8 4.84c.6.003 1.2.08 1.77.23 1.35-.92 1.94-.73 1.94-.73.39.97.14 1.69.07 1.87.45.49.73 1.12.73 1.89 0 2.72-1.66 3.31-3.24 3.49.25.22.48.65.48 1.31v1.95c0 .19.13.4.49.33A7.001 7.001 0 0 0 15 8c0-3.87-3.13-7-7-7z"/>
-            </svg>
-            <span>github.com/pt-solutions</span>
-          </div>
+        <div class="logo mb-4">
+          <span style="color: var(--violet);">PT</span>
+          <span style="color: var(--fg);">SOLUTIONS</span>
         </div>
+        <p class="text-[14px] max-w-sm" style="color: var(--muted);">
+          Petr Šimůnek — Architect of systems at the intersection of
+          engineering, business, and technology.
+        </p>
       </div>
 
-      <form class="form" onsubmit="return false;">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="name">Name</label>
-            <input class="form-input" type="text" id="name" name="name" placeholder="Your name" autocomplete="name">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="email">Email</label>
-            <input class="form-input" type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="company">Company <span style="color:var(--muted-light); font-style:italic">(optional)</span></label>
-          <input class="form-input" type="text" id="company" name="company" placeholder="Your company" autocomplete="organization">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="message">What are you trying to automate or build?</label>
-          <textarea class="form-textarea" id="message" name="message" placeholder="Describe your use case, current process, or what you'd like to achieve..."></textarea>
-        </div>
-        <div>
-          <button type="submit" class="btn btn-primary">Send Message →</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</section>
-</main>
+      <div>
+        <div class="label-mono mb-4">CONTACT</div>
+        <ul class="space-y-2 text-[14px]" style="color: var(--gray2);">
+          <li><a class="subtle" href="mailto:ai@pt-solutions.tech">ai@pt-solutions.tech</a></li>
+          <li><a class="subtle" href="tel:+420777414226">+420 777 414 226</a></li>
+        </ul>
+      </div>
 
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="foot-inner">
-    <span class="foot-copy">© 2025 PT Solutions. All rights reserved.</span>
-    <ul class="foot-links">
-      <li>
-        <a href="#" aria-label="LinkedIn" title="LinkedIn">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="3"/>
-            <line x1="8" y1="11" x2="8" y2="17"/>
-            <line x1="8" y1="6" x2="8" y2="8"/>
-            <path d="M12 17v-5.5M15.5 17v-3a2 2 0 0 0-3.5-1.3"/>
-          </svg>
-        </a>
-      </li>
-      <li>
-        <a href="#" aria-label="GitHub" title="GitHub">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-          </svg>
-        </a>
-      </li>
-      <li>
-        <a href="#" aria-label="Twitter / X" title="Twitter">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
-          </svg>
-        </a>
-      </li>
-    </ul>
+      <div>
+        <div class="label-mono mb-4">ELSEWHERE</div>
+        <ul class="space-y-2 text-[14px]" style="color: var(--gray2);">
+          <li><a class="subtle" href="https://www.linkedin.com/in/simunekpetr" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="label-mono mb-4">LOCATION</div>
+        <ul class="space-y-2 text-[14px]" style="color: var(--gray2);">
+          <li>Prague, Czechia</li>
+          <li class="coord">50.0755° N · 14.4378° E</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pt-8 flex flex-wrap items-center justify-between gap-4" style="border-top: 1px solid var(--line);">
+      <div class="label-mono">© 2026 PT SOLUTIONS · v3.0</div>
+      <div class="label-mono">CRAFTED WITH SYSTEMS THINKING — NOT TEMPLATES</div>
+    </div>
   </div>
 </footer>
 
+</main>
+
+<script>
+  // Reveals are now pure CSS animation. No JS visibility logic needed.
+
+  const rails = document.querySelectorAll('.side-rail a');
+  const sectionMap = {
+    top: document.getElementById('top'),
+    about: document.getElementById('about'),
+    philosophy: document.getElementById('philosophy'),
+    contact: document.getElementById('contact'),
+  };
+  function syncRail() {
+    let active = 'top';
+    const y = window.scrollY + window.innerHeight * 0.35;
+    Object.entries(sectionMap).forEach(([k, el]) => {
+      if (el && el.offsetTop <= y) active = k;
+    });
+    rails.forEach((a) => a.classList.toggle('active', a.dataset.anchor === active));
+  }
+  window.addEventListener('scroll', syncRail, { passive: true });
+  syncRail();
+
+  const form = document.getElementById('serendipity-form');
+  const ok = document.getElementById('form-ok');
+  const status = document.getElementById('form-status');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        status.textContent = 'CHANNEL · INCOMPLETE';
+        status.style.color = '#9F6BFF';
+        return;
+      }
+      form.classList.add('hidden');
+      ok.classList.remove('hidden');
+    });
+  }
+</script>
 </body>
 </html>
