@@ -827,15 +827,38 @@
   const ok = document.getElementById('form-ok');
   const status = document.getElementById('form-status');
   if (form) {
-    form.addEventListener('submit', (e) => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!form.checkValidity()) {
         status.textContent = 'CHANNEL · INCOMPLETE';
         status.style.color = '#9F6BFF';
         return;
       }
-      form.classList.add('hidden');
-      ok.classList.remove('hidden');
+
+      submitBtn.disabled = true;
+      status.textContent = 'CHANNEL · TRANSMITTING';
+      status.style.color = '';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: form.name.value.trim(),
+            email: form.email.value.trim(),
+            problem: form.problem.value.trim(),
+          }),
+        });
+        if (!response.ok) throw new Error('send_failed');
+        form.classList.add('hidden');
+        ok.classList.remove('hidden');
+      } catch {
+        submitBtn.disabled = false;
+        status.textContent = 'CHANNEL · DISRUPTED — TRY AGAIN';
+        status.style.color = '#9F6BFF';
+      }
     });
   }
 </script>
